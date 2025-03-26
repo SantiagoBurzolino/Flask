@@ -11,9 +11,17 @@ def principal():
         <a href="/chau">chau</a> 
         <a href="/maquina">maquina</a>
         """
-@app.route("/hola")
-def saludar():
-    return "<h2>hola, Clase!</h2>"
+
+@app.route("/dado/<int:caras>")
+def dado(caras):
+    from random import randint
+    numero = randint(1,caras)
+    return f"<h2>dado de  {caras} caras, salio {numero}!</h2>"
+
+
+@app.route("/hola/<string:nombre>")
+def saludar_con_nombre(nombre):
+    return f"<h2>hola {nombre}!</h2>"
 
 
 @app.route("/chau")
