@@ -1,5 +1,6 @@
 
-from flask import Flask
+from flask import Flask,url_for
+
 
 app = Flask(__name__)
 
@@ -8,9 +9,29 @@ app = Flask(__name__)
 def principal():
     return """
         <a href="/hola">hola</a> 
-        <a href="/chau">chau</a> 
+        <a href="/chau">chau</a>
+        <br> 
         <a href="/maquina">maquina</a>
+        <br>
         """
+
+
+@app.route("/")
+def main():
+    url_hola = url_for("hello")
+    url_dado = url_for("dado", caras=6)
+    url_logo = url_for("static", filename="img/Minion.png")
+
+    return f"""
+    <a href="{url_hola}">Hola</a>
+    <br>
+    <a href="{url_for("bye")}">Chau</a>
+    <br>
+    <a href="{url_logo}">Logo</a>
+    <br>
+    <a href="{url_dado}">Tirar_Dado</a>
+    """
+
 
 @app.route("/dado/<int:caras>")
 def dado(caras):
