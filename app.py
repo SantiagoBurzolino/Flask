@@ -1,5 +1,4 @@
-
-from flask import Flask,url_for
+from flask import Flask,url_for,render_template
 import sqlite3
 
 
@@ -135,8 +134,13 @@ def testCrearif():
 
 @app.route("/sqlite/usuario/<int:id>")
 def seleccionindividual(id):
-    abrirConexion
+    conexion = abrirConexion()
+    db = conexion.cursor()
     cursor = db.execute("SELECT * FROM usuarios WHERE id=? ", (id,))
+    resultado = db.fetchone()
+    cerrarConexion()
+    fila = dict(resultado)
+    return str(fila) 
 
 
 
@@ -149,3 +153,43 @@ def modifemail(nombre,email):
     db.commit()
     cerrarConexion()
     return f"Se modifico el email de usuario ({email})"
+
+
+@app.route("/mostrarUsuario/<int:id>")
+def datos_plantilla(id):
+    abrirConexion()
+    cursor = db.cursor()
+    cursor.execute("SELECT id, usuario, email, direccion, telefono FROM usuarios WHERE id = ?; ", (id,))
+    res = cursor.fetchone()
+    cerrarConexion()
+    usuario = None
+    email = None
+    direccion = None
+    telefono = None
+    if res != None:
+        usuario=res["usuario"]
+        email=res["email"]
+        direccion=res["direccion"]
+        telefono=res["telefono"]
+    return render_template("Templates.html", id=id, usuario=usuario, email=email, direccion=direccion, telefono=telefono)    
+
+@app.route("/mostrar-planilla-usuario/<int:id>")
+def datos_plantilla(id):
+    abrirConexion()
+    cursor = db.cursor()
+    cursor.execute("SELECT id, usuario, email FROM usuarios WHERE id = ?; ", (id,))
+    res = cursor.fetchone()
+    cerrarConexion()
+    usuario = None
+    email = None
+    if res != None:
+        usuario=res["usuario"]
+        email=res["email"]
+    return render_template("Templates.html", id=id, usuario=usuario, email=email)   
+
+@app.route("/mostrar-usuarios-full")   
+def datos_ planilla():
+    abrirConexion()
+    cursor = db.cursor()
+    cursor.execute("SELECT id, usuario FROM usuarios ")
+    res =  
