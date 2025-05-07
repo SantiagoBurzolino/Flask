@@ -155,8 +155,22 @@ def modifemail(nombre,email):
     return f"Se modifico el email de usuario ({email})"
 
 
+@app.route("/mostrar-planilla-usuario/<int:id>")
+def datos_plantilla1(id):
+    abrirConexion()
+    cursor = db.cursor()
+    cursor.execute("SELECT id, usuario, email FROM usuarios WHERE id = ?; ", (id,))
+    res = cursor.fetchone()
+    cerrarConexion()
+    usuario = None
+    email = None
+    if res != None:
+        usuario=res["usuario"]
+        email=res["email"]
+    return render_template("Templates.html", id=id, usuario=usuario, email=email)   
+
 @app.route("/mostrarUsuario/<int:id>")
-def datos_plantilla(id):
+def datos_plantilla2(id):
     abrirConexion()
     cursor = db.cursor()
     cursor.execute("SELECT id, usuario, email, direccion, telefono FROM usuarios WHERE id = ?; ", (id,))
@@ -171,25 +185,14 @@ def datos_plantilla(id):
         email=res["email"]
         direccion=res["direccion"]
         telefono=res["telefono"]
-    return render_template("Templates.html", id=id, usuario=usuario, email=email, direccion=direccion, telefono=telefono)    
+    return render_template("Templates2.html", id=id, usuario=usuario, email=email, direccion=direccion, telefono=telefono)    
 
-@app.route("/mostrar-planilla-usuario/<int:id>")
-def datos_plantilla(id):
-    abrirConexion()
-    cursor = db.cursor()
-    cursor.execute("SELECT id, usuario, email FROM usuarios WHERE id = ?; ", (id,))
-    res = cursor.fetchone()
-    cerrarConexion()
-    usuario = None
-    email = None
-    if res != None:
-        usuario=res["usuario"]
-        email=res["email"]
-    return render_template("Templates.html", id=id, usuario=usuario, email=email)   
+
 
 @app.route("/mostrar-usuarios-full")   
-def datos_ planilla():
+def lista_planilla():
     abrirConexion()
     cursor = db.cursor()
     cursor.execute("SELECT id, usuario FROM usuarios ")
-    res =  
+    usuarios =  cursor.fetchall()
+    return render_template("Templates3.html", usuarios=usuarios)

@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<head><title>Lista de usuarios</title></head>
+<body>
+    {% for usuario in usuarios %}
+    <a href="{{url_for('lista_planilla', id=usuario['id'])}}"> {{usuario["usuario"]}} </a>
+    {%endfor%}
+
+</body>
+</html>
